@@ -84,19 +84,19 @@ WHERE tablename = 'flattened_profiles';
 
 -- 7. Search performance test
 EXPLAIN (ANALYZE, BUFFERS) 
-SELECT profile_id, full_name, current_company 
+SELECT original_id, full_name, current_company 
 FROM flattened_profiles 
 WHERE search_vector @@ plainto_tsquery('software engineer');
 
 -- 8. Array search performance
 EXPLAIN (ANALYZE, BUFFERS)
-SELECT profile_id, full_name, skills
+SELECT original_id, full_name, skills
 FROM flattened_profiles 
 WHERE 'JavaScript' = ANY(skills);
 
 -- 9. Company search performance
 EXPLAIN (ANALYZE, BUFFERS)
-SELECT profile_id, full_name, current_position
+SELECT original_id, full_name, current_position
 FROM flattened_profiles 
 WHERE current_company ILIKE '%google%';
 

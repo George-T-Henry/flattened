@@ -6,7 +6,7 @@
 
 -- Bulk insert all profiles
 INSERT INTO flattened_profiles (
-    profile_id,
+    original_id,
     full_name,
     first_name,
     last_name,
@@ -46,20 +46,20 @@ SELECT
     NOW() as created_at,
     NOW() as last_updated
 FROM (
-    SELECT DISTINCT ON (profile_id) *
+    SELECT DISTINCT ON (original_id) *
     FROM (
         SELECT * FROM flatten_profile_data(
             pp.profile_data, 
-            COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'profile_id')
+            COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id')
         )
         FROM public_profiles pp
         WHERE pp.profile_data IS NOT NULL 
         AND pp.profile_data != '{}'::jsonb
-        AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'profile_id') IS NOT NULL
+        AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') IS NOT NULL
     ) flattened_data
-    WHERE profile_id IS NOT NULL
+    WHERE original_id IS NOT NULL
 ) flattened
-ON CONFLICT (profile_id) DO UPDATE SET
+ON CONFLICT (original_id) DO UPDATE SET
     full_name = EXCLUDED.full_name,
     first_name = EXCLUDED.first_name,
     last_name = EXCLUDED.last_name,

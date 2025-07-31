@@ -16,19 +16,19 @@ SELECT
 FROM public_profiles pp
 WHERE pp.profile_data IS NOT NULL 
 AND pp.profile_data != '{}'::jsonb
-AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'profile_id') NOT IN (
-    SELECT profile_id FROM flattened_profiles
+AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') NOT IN (
+    SELECT original_id FROM flattened_profiles
 );
 
 -- 3. Show the actual missing profiles (limit 10)
 SELECT 
-    COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'profile_id') as missing_profile_id,
+    COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') as missing_original_id,
     pp.profile_data->>'name' as profile_name
 FROM public_profiles pp
 WHERE pp.profile_data IS NOT NULL 
 AND pp.profile_data != '{}'::jsonb
-AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'profile_id') NOT IN (
-    SELECT profile_id FROM flattened_profiles
+AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') NOT IN (
+    SELECT original_id FROM flattened_profiles
 )
 LIMIT 10;
 
@@ -41,7 +41,7 @@ WHERE full_name IS NULL OR full_name = '';
 
 -- 5. Show profiles with missing essential data
 SELECT 
-    profile_id,
+    original_id,
     full_name,
     current_company,
     total_years_experience
@@ -61,7 +61,7 @@ OR years_at_current_company > total_years_experience + 5;
 
 -- 7. Show invalid experience profiles
 SELECT 
-    profile_id,
+    original_id,
     full_name,
     total_years_experience,
     years_at_current_company,
@@ -73,10 +73,10 @@ OR years_at_current_company < 0
 OR years_at_current_company > total_years_experience + 5
 LIMIT 10;
 
--- 8. Check for duplicate profile IDs
+-- 8. Check for duplicate original IDs
 SELECT 
-    'Duplicate Profile IDs' as check_name,
-    COUNT(*) - COUNT(DISTINCT profile_id) as duplicates
+    'Duplicate Original IDs' as check_name,
+    COUNT(*) - COUNT(DISTINCT original_id) as duplicates
 FROM flattened_profiles;
 
 -- 9. Array field statistics
