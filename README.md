@@ -17,69 +17,105 @@ Expected structure:
 ```sql
 CREATE TABLE public_profiles (
     id TEXT PRIMARY KEY,
-    profile_data JSONB,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    profile JSONB
 );
 ```
 
 ### Target Table: `flattened_profiles`
 Structured table with extracted and computed fields:
-- **Basic Info**: name, email, phone, social URLs, location
-- **Professional**: current position, company, headline, summary
-- **Experience**: total years, current tenure, previous companies, titles, industries
-- **Skills**: skills, technologies, programming languages (arrays)
-- **Education**: degrees, schools, fields of study (arrays)
-- **Metadata**: search vector, timestamps, original JSONB data
+```sql
+CREATE TABLE flattened_profiles (
+    search_text tsvector DEFAULT to_tsvector('english'::regconfig, COALESCE((full_jsonb)::text, ''::text)),
+    original_id text UNIQUE,
+    full_name text,
+    current_title text,
+    location text,
+    about_me text,
+    linkedin text,
+    gender text,
+    skills text,
+    current_company text,
+    current_title_from_workexp text,
+    past_experience text,
+    full_jsonb jsonb
+);
+```
 
 ## Installation & Setup
 
 ### 1. Prerequisites
 - Supabase project with PostgreSQL database
-- `public_profiles` table with JSONB profile data
+- `public_profiles` table with columns `id` and `profile` (JSONB)
+- `flattened_profiles` table already exists (as shown above)
 - Appropriate database permissions for creating functions and triggers
 
-### 2. Run Migrations
-Execute the SQL files in order:
+### 2. Setup Instructions
 
-```bash
-# 1. Create the flattened_profiles table and search functions
-psql -f migrations/001_create_flattened_profiles_table.sql
+Since your `flattened_profiles` table already exists, **skip Migration 001** and proceed with:
 
-# 2. Create the profile flattening function
-psql -f migrations/002_create_flatten_profile_function.sql
+#### Step A: Create the Flattening Function
+Run `migrations/002_create_flatten_profile_function.sql` in Supabase SQL Editor
 
-# 3. Create the sync trigger
-psql -f migrations/003_create_sync_trigger.sql
-```
+#### Step B: Create the Sync Trigger  
+Run `migrations/003_create_sync_trigger.sql` in Supabase SQL Editor
 
-### 3. Enable the Trigger
-After your `public_profiles` table exists, run:
+#### Step C: Enable the Trigger
 ```sql
 SELECT create_public_profiles_sync_trigger();
 ```
 
-### 4. Verify Installation
+### 3. Verify Installation
 Check that the trigger is active:
 ```sql
 SELECT 
     trigger_name, 
     event_manipulation, 
-    action_timing,
-    action_statement
+    action_timing
 FROM information_schema.triggers 
 WHERE trigger_name = 'sync_flattened_profiles_trigger';
+```
+
+### 4. Test the System
+Insert a test profile:
+```sql
+INSERT INTO public_profiles (id, profile) VALUES (
+    'test_profile_001',
+    '{
+        "name": "Jane Smith",
+        "headline": "Product Manager",
+        "location": "New York, NY",
+        "summary": "Experienced PM with 8+ years in tech",
+        "linkedin": "https://linkedin.com/in/janesmith",
+        "gender": "Female",
+        "skills": ["Product Strategy", "User Research", "Agile"],
+        "work_experience": [
+            {
+                "company": "BigTech Corp",
+                "title": "Senior Product Manager", 
+                "start_date": "2021-03",
+                "end_date": "current"
+            }
+        ]
+    }'::jsonb
+);
+```
+
+Check if it was flattened:
+```sql
+SELECT original_id, full_name, current_company, skills
+FROM flattened_profiles 
+WHERE original_id = 'test_profile_001';
 ```
 
 ## Data Flow
 
 ```
-public_profiles (JSONB) → [Trigger] → flatten_profile_data() → flattened_profiles (Structured)
+public_profiles (id, profile JSONB) → [Trigger] → flatten_profile_data() → flattened_profiles (Structured)
 ```
 
 1. **INSERT/UPDATE**: New or changed profiles are automatically flattened and upserted
 2. **DELETE**: Corresponding flattened records are removed
-3. **Search Vector**: Full-text search indexes are automatically maintained
+3. **Search Text**: Full-text search vectors are automatically maintained
 
 ## Expected JSONB Structure
 
@@ -129,80 +165,92 @@ The flattening function expects profile data in this format:
 ## Key Features
 
 ### 1. Intelligent Data Extraction
-- **Name parsing**: Automatically splits full names into first/last
-- **Date handling**: Parses various date formats and handles "current" positions
-- **Experience calculation**: Computes total years and current company tenure
-- **Array deduplication**: Removes duplicate skills, companies, etc.
+- **Field mapping**: Maps JSONB fields to structured columns
+- **Skills handling**: Converts arrays to comma-separated strings  
+- **Work experience parsing**: Extracts current job and formats past experience
+- **Flexible data types**: Handles both array and string skill formats
 
 ### 2. Current Position Detection
-- Identifies current employment from work experience
+- Identifies current employment from work experience array
 - Handles "current", "present", "ongoing" end dates
-- Extracts company information for current employer
+- Extracts company and title information for current employer
+- Fallback to headline field if no current job found
 
 ### 3. Full-Text Search
-- Automatic search vector generation
-- Weighted search terms (names and companies weighted higher)
+- Automatic search text vector generation from full JSONB
+- Optimized for PostgreSQL full-text search
 - Supports complex search queries
 
 ### 4. Error Handling
 - Graceful handling of malformed data
 - Warning logs for failed extractions
 - Original operations continue even if flattening fails
+- Data validation and completeness checks
 
 ## Usage Examples
 
 ### Query Flattened Data
 ```sql
 -- Find profiles by company
-SELECT full_name, current_position, total_years_experience
+SELECT full_name, current_title, current_company
 FROM flattened_profiles 
 WHERE current_company ILIKE '%google%';
 
--- Search by skills
+-- Search by skills (comma-separated string)
 SELECT full_name, current_company, skills
 FROM flattened_profiles 
-WHERE 'JavaScript' = ANY(skills);
+WHERE skills ILIKE '%JavaScript%';
 
 -- Full-text search
-SELECT full_name, headline, current_company
+SELECT full_name, current_title, current_company
 FROM flattened_profiles 
-WHERE search_vector @@ plainto_tsquery('software engineer postgresql');
+WHERE search_text @@ plainto_tsquery('software engineer postgresql');
+
+-- Location-based search
+SELECT full_name, current_title, location
+FROM flattened_profiles 
+WHERE location ILIKE '%New York%';
 ```
 
 ### Manual Operations
 ```sql
--- Manually sync a specific profile
+-- Manually sync a specific profile  
 SELECT * FROM flatten_profile_data(
-    (SELECT profile_data FROM public_profiles WHERE id = 'profile_123'),
+    (SELECT profile FROM public_profiles WHERE id = 'profile_123'),
     'profile_123'
 );
 
--- Rebuild all flattened data
-TRUNCATE flattened_profiles;
+-- Bulk migrate existing data (use the bulk_migration.sql script)
 INSERT INTO flattened_profiles (
-    profile_id, full_name, first_name, last_name, email, phone,
-    linkedin_url, github_url, website_url, location, headline, summary,
-    current_company, current_position, current_start_date,
-    total_years_experience, years_at_current_company,
-    previous_companies, job_titles, industries,
-    skills, technologies, programming_languages,
-    education_degrees, education_schools, education_fields,
-    certifications, company_size, company_industry, company_location,
-    profile_source, original_data
+    original_id, full_name, current_title, location, about_me, 
+    linkedin, gender, skills, current_company, current_title_from_workexp, 
+    past_experience, full_jsonb
 )
 SELECT * FROM (
-    SELECT DISTINCT ON (profile_id) *
+    SELECT DISTINCT ON (original_id) *
     FROM (
         SELECT * FROM flatten_profile_data(
-            pp.profile_data, 
-            COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'profile_id')
+            pp.profile, 
+            COALESCE(pp.id::TEXT, pp.profile->>'id', pp.profile->>'original_id')
         )
         FROM public_profiles pp
-        WHERE pp.profile_data IS NOT NULL 
-        AND pp.profile_data != '{}'::jsonb
+        WHERE pp.profile IS NOT NULL 
+        AND pp.profile != '{}'::jsonb
     ) flattened_data
-    WHERE profile_id IS NOT NULL
-) unique_profiles;
+    WHERE original_id IS NOT NULL
+) unique_profiles
+ON CONFLICT (original_id) DO UPDATE SET
+    full_name = EXCLUDED.full_name,
+    current_title = EXCLUDED.current_title,
+    location = EXCLUDED.location,
+    about_me = EXCLUDED.about_me,
+    linkedin = EXCLUDED.linkedin,
+    gender = EXCLUDED.gender,
+    skills = EXCLUDED.skills,
+    current_company = EXCLUDED.current_company,
+    current_title_from_workexp = EXCLUDED.current_title_from_workexp,
+    past_experience = EXCLUDED.past_experience,
+    full_jsonb = EXCLUDED.full_jsonb;
 ```
 
 ## Monitoring & Maintenance
@@ -211,14 +259,16 @@ SELECT * FROM (
 ```sql
 -- Compare counts
 SELECT 
-    (SELECT COUNT(*) FROM public_profiles WHERE profile_data IS NOT NULL) as source_count,
+    (SELECT COUNT(*) FROM public_profiles WHERE profile IS NOT NULL) as source_count,
     (SELECT COUNT(*) FROM flattened_profiles) as flattened_count;
 
--- Find recently updated profiles
-SELECT profile_id, full_name, last_updated 
-FROM flattened_profiles 
-ORDER BY last_updated DESC 
-LIMIT 10;
+-- Check data completeness
+SELECT 
+    COUNT(*) as total_profiles,
+    COUNT(*) FILTER (WHERE full_name IS NOT NULL) as with_names,
+    COUNT(*) FILTER (WHERE current_company IS NOT NULL) as with_companies,
+    COUNT(*) FILTER (WHERE skills IS NOT NULL AND skills != '') as with_skills
+FROM flattened_profiles;
 ```
 
 ### Performance Optimization
@@ -226,7 +276,7 @@ LIMIT 10;
 -- Analyze table statistics
 ANALYZE flattened_profiles;
 
--- Reindex search vectors if needed
+-- Reindex search text if needed
 REINDEX INDEX idx_flattened_profiles_search;
 ```
 
@@ -235,15 +285,18 @@ REINDEX INDEX idx_flattened_profiles_search;
 ### Common Issues
 
 1. **Trigger not firing**: Ensure `public_profiles` table exists and trigger is created
-2. **Missing profile IDs**: Check that profiles have `id` field in JSONB or table
-3. **Date parsing errors**: Verify date formats in work experience
-4. **Performance issues**: Consider partitioning for large datasets
+2. **Missing original IDs**: Check that profiles have `id` field in table or JSONB
+3. **Column mismatch errors**: Verify table has correct column names (`profile`, not `profile_data`)
+4. **Performance issues**: Monitor search_text index usage for large datasets
 
 ### Debug Mode
 Enable detailed logging:
 ```sql
 SET log_min_messages = 'NOTICE';
 ```
+
+### Validate Setup
+Run data validation queries from `scripts/data_validation.sql` to check system health.
 
 ## Utility Scripts
 

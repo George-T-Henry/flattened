@@ -10,7 +10,7 @@ BEGIN
     -- Handle DELETE operations
     IF TG_OP = 'DELETE' THEN
         -- Extract original ID from OLD record
-        original_id_value := COALESCE(OLD.id::TEXT, (OLD.profile_data->>'id'), (OLD.profile_data->>'original_id'));
+        original_id_value := COALESCE(OLD.id::TEXT, (OLD.profile->>'id'), (OLD.profile->>'original_id'));
         
         IF original_id_value IS NOT NULL THEN
             DELETE FROM flattened_profiles 
@@ -24,7 +24,7 @@ BEGIN
     
     -- Handle INSERT and UPDATE operations
     -- Extract original ID from NEW record
-    original_id_value := COALESCE(NEW.id::TEXT, (NEW.profile_data->>'id'), (NEW.profile_data->>'original_id'));
+    original_id_value := COALESCE(NEW.id::TEXT, (NEW.profile->>'id'), (NEW.profile->>'original_id'));
     
     -- Skip if no original ID can be determined
     IF original_id_value IS NULL THEN
@@ -32,8 +32,8 @@ BEGIN
         RETURN NEW;
     END IF;
     
-    -- Skip if profile_data is NULL or empty
-    IF NEW.profile_data IS NULL OR NEW.profile_data = '{}'::jsonb THEN
+    -- Skip if profile is NULL or empty
+    IF NEW.profile IS NULL OR NEW.profile = '{}'::jsonb THEN
         RAISE WARNING 'Profile data is null or empty for original ID %, skipping sync', original_id_value;
         RETURN NEW;
     END IF;
@@ -41,7 +41,13 @@ BEGIN
     BEGIN
         -- Flatten the profile data
         SELECT * INTO flattened_data 
-        FROM flatten_profile_data(NEW.profile_data, original_id_value);
+        FROM flatten_profile_data(NEW.profile, original_id_value);
+        
+        -- Check if flattening returned data
+        IF NOT FOUND OR flattened_data.original_id IS NULL THEN
+            RAISE WARNING 'Flattening function returned no data for original ID %', original_id_value;
+            RETURN NEW;
+        END IF;
         
         -- Upsert into flattened_profiles table
         INSERT INTO flattened_profiles (
@@ -84,12 +90,12 @@ BEGIN
             past_experience = EXCLUDED.past_experience,
             full_jsonb = EXCLUDED.full_jsonb;
         
-        RAISE NOTICE 'Successfully synced flattened profile: % (%, %)', 
-                     original_id_value, flattened_data.full_name, TG_OP;
+        RAISE NOTICE 'Successfully synced flattened profile: % (%)', 
+                     original_id_value, flattened_data.full_name;
                      
     EXCEPTION WHEN OTHERS THEN
-        RAISE WARNING 'Failed to sync flattened profile % (%, %): %', 
-                      original_id_value, flattened_data.full_name, TG_OP, SQLERRM;
+        RAISE WARNING 'Failed to sync flattened profile %: %', 
+                      original_id_value, SQLERRM;
         -- Don't fail the original operation, just log the warning
     END;
     
@@ -98,7 +104,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Create the trigger on public_profiles table
--- Note: This assumes public_profiles has columns 'id' and 'profile_data'
+-- Note: This assumes public_profiles has columns 'id' and 'profile'
 -- Adjust the trigger creation based on your actual table structure
 
 CREATE OR REPLACE FUNCTION create_public_profiles_sync_trigger()

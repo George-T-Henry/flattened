@@ -8,90 +8,44 @@
 INSERT INTO flattened_profiles (
     original_id,
     full_name,
-    first_name,
-    last_name,
-    email,
-    phone,
-    linkedin_url,
-    github_url,
-    website_url,
+    current_title,
     location,
-    headline,
-    summary,
-    current_company,
-    current_position,
-    current_start_date,
-    total_years_experience,
-    years_at_current_company,
-    previous_companies,
-    job_titles,
-    industries,
+    about_me,
+    linkedin,
+    gender,
     skills,
-    technologies,
-    programming_languages,
-    education_degrees,
-    education_schools,
-    education_fields,
-    certifications,
-    company_size,
-    company_industry,
-    company_location,
-    profile_source,
-    original_data,
-    created_at,
-    last_updated
+    current_company,
+    current_title_from_workexp,
+    past_experience,
+    full_jsonb
 )
-SELECT 
-    flattened.*,
-    NOW() as created_at,
-    NOW() as last_updated
+SELECT flattened.*
 FROM (
     SELECT DISTINCT ON (original_id) *
     FROM (
         SELECT * FROM flatten_profile_data(
-            pp.profile_data, 
-            COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id')
+            pp.profile, 
+            COALESCE(pp.id::TEXT, pp.profile->>'id', pp.profile->>'original_id')
         )
         FROM public_profiles pp
-        WHERE pp.profile_data IS NOT NULL 
-        AND pp.profile_data != '{}'::jsonb
-        AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') IS NOT NULL
+        WHERE pp.profile IS NOT NULL 
+        AND pp.profile != '{}'::jsonb
+        AND COALESCE(pp.id::TEXT, pp.profile->>'id', pp.profile->>'original_id') IS NOT NULL
     ) flattened_data
     WHERE original_id IS NOT NULL
 ) flattened
 ON CONFLICT (original_id) DO UPDATE SET
     full_name = EXCLUDED.full_name,
-    first_name = EXCLUDED.first_name,
-    last_name = EXCLUDED.last_name,
-    email = EXCLUDED.email,
-    phone = EXCLUDED.phone,
-    linkedin_url = EXCLUDED.linkedin_url,
-    github_url = EXCLUDED.github_url,
-    website_url = EXCLUDED.website_url,
+    current_title = EXCLUDED.current_title,
     location = EXCLUDED.location,
-    headline = EXCLUDED.headline,
-    summary = EXCLUDED.summary,
-    current_company = EXCLUDED.current_company,
-    current_position = EXCLUDED.current_position,
-    current_start_date = EXCLUDED.current_start_date,
-    total_years_experience = EXCLUDED.total_years_experience,
-    years_at_current_company = EXCLUDED.years_at_current_company,
-    previous_companies = EXCLUDED.previous_companies,
-    job_titles = EXCLUDED.job_titles,
-    industries = EXCLUDED.industries,
+    about_me = EXCLUDED.about_me,
+    linkedin = EXCLUDED.linkedin,
+    gender = EXCLUDED.gender,
     skills = EXCLUDED.skills,
-    technologies = EXCLUDED.technologies,
-    programming_languages = EXCLUDED.programming_languages,
-    education_degrees = EXCLUDED.education_degrees,
-    education_schools = EXCLUDED.education_schools,
-    education_fields = EXCLUDED.education_fields,
-    certifications = EXCLUDED.certifications,
-    company_size = EXCLUDED.company_size,
-    company_industry = EXCLUDED.company_industry,
-    company_location = EXCLUDED.company_location,
-    profile_source = EXCLUDED.profile_source,
-    original_data = EXCLUDED.original_data,
-    last_updated = NOW();
+    current_company = EXCLUDED.current_company,
+    current_title_from_workexp = EXCLUDED.current_title_from_workexp,
+    past_experience = EXCLUDED.past_experience,
+    full_jsonb = EXCLUDED.full_jsonb;
 
 -- Show migration results
 SELECT 

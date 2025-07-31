@@ -4,9 +4,9 @@
 -- 1. Compare record counts between source and target
 SELECT 
     'Source vs Target Count' as check_name,
-    (SELECT COUNT(*) FROM public_profiles WHERE profile_data IS NOT NULL) as source_count,
+    (SELECT COUNT(*) FROM public_profiles WHERE profile IS NOT NULL) as source_count,
     (SELECT COUNT(*) FROM flattened_profiles) as target_count,
-    (SELECT COUNT(*) FROM public_profiles WHERE profile_data IS NOT NULL) - 
+    (SELECT COUNT(*) FROM public_profiles WHERE profile IS NOT NULL) - 
     (SELECT COUNT(*) FROM flattened_profiles) as difference;
 
 -- 2. Find profiles missing from flattened table
@@ -14,20 +14,20 @@ SELECT
     'Missing from Flattened' as check_name,
     COUNT(*) as missing_count
 FROM public_profiles pp
-WHERE pp.profile_data IS NOT NULL 
-AND pp.profile_data != '{}'::jsonb
-AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') NOT IN (
+WHERE pp.profile IS NOT NULL 
+AND pp.profile != '{}'::jsonb
+AND COALESCE(pp.id::TEXT, pp.profile->>'id', pp.profile->>'original_id') NOT IN (
     SELECT original_id FROM flattened_profiles
 );
 
 -- 3. Show the actual missing profiles (limit 10)
 SELECT 
-    COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') as missing_original_id,
-    pp.profile_data->>'name' as profile_name
+    COALESCE(pp.id::TEXT, pp.profile->>'id', pp.profile->>'original_id') as missing_original_id,
+    pp.profile->>'name' as profile_name
 FROM public_profiles pp
-WHERE pp.profile_data IS NOT NULL 
-AND pp.profile_data != '{}'::jsonb
-AND COALESCE(pp.id::TEXT, pp.profile_data->>'id', pp.profile_data->>'original_id') NOT IN (
+WHERE pp.profile IS NOT NULL 
+AND pp.profile != '{}'::jsonb
+AND COALESCE(pp.id::TEXT, pp.profile->>'id', pp.profile->>'original_id') NOT IN (
     SELECT original_id FROM flattened_profiles
 )
 LIMIT 10;
@@ -49,28 +49,23 @@ FROM flattened_profiles
 WHERE full_name IS NULL OR full_name = ''
 LIMIT 10;
 
--- 6. Experience validation - negative or unrealistic values
+-- 6. Current job validation
 SELECT 
-    'Invalid Experience Values' as check_name,
-    COUNT(*) as count
-FROM flattened_profiles 
-WHERE total_years_experience < 0 
-OR total_years_experience > 60
-OR years_at_current_company < 0
-OR years_at_current_company > total_years_experience + 5;
+    'Profiles with Current Job Info' as check_name,
+    COUNT(*) FILTER (WHERE current_company IS NOT NULL) as with_current_company,
+    COUNT(*) FILTER (WHERE current_title_from_workexp IS NOT NULL) as with_current_title,
+    COUNT(*) as total_profiles
+FROM flattened_profiles;
 
--- 7. Show invalid experience profiles
+-- 7. Show profiles with work experience data
 SELECT 
     original_id,
     full_name,
-    total_years_experience,
-    years_at_current_company,
-    current_company
+    current_company,
+    current_title_from_workexp,
+    CASE WHEN past_experience IS NOT NULL THEN 'Yes' ELSE 'No' END as has_past_experience
 FROM flattened_profiles 
-WHERE total_years_experience < 0 
-OR total_years_experience > 60
-OR years_at_current_company < 0
-OR years_at_current_company > total_years_experience + 5
+WHERE current_company IS NOT NULL OR past_experience IS NOT NULL
 LIMIT 10;
 
 -- 8. Check for duplicate original IDs
@@ -79,26 +74,25 @@ SELECT
     COUNT(*) - COUNT(DISTINCT original_id) as duplicates
 FROM flattened_profiles;
 
--- 9. Array field statistics
+-- 9. Skills analysis
 SELECT 
-    'Array Field Statistics' as report_name,
-    AVG(array_length(skills, 1)) as avg_skills_count,
-    AVG(array_length(technologies, 1)) as avg_tech_count,
-    AVG(array_length(previous_companies, 1)) as avg_prev_companies,
-    AVG(array_length(job_titles, 1)) as avg_job_titles
-FROM flattened_profiles
-WHERE skills IS NOT NULL;
+    'Skills Statistics' as report_name,
+    COUNT(*) FILTER (WHERE skills IS NOT NULL AND skills != '') as profiles_with_skills,
+    COUNT(*) as total_profiles,
+    ROUND(COUNT(*) FILTER (WHERE skills IS NOT NULL AND skills != '') * 100.0 / COUNT(*), 2) as percentage_with_skills
+FROM flattened_profiles;
 
--- 10. Most common skills
+-- 10. Most common skills (from comma-separated strings)
 SELECT 
-    skill,
+    TRIM(skill) as skill,
     COUNT(*) as frequency
 FROM (
-    SELECT unnest(skills) as skill 
+    SELECT unnest(string_to_array(skills, ',')) as skill 
     FROM flattened_profiles 
-    WHERE skills IS NOT NULL
+    WHERE skills IS NOT NULL AND skills != ''
 ) skill_breakdown
-GROUP BY skill
+WHERE TRIM(skill) != ''
+GROUP BY TRIM(skill)
 ORDER BY frequency DESC
 LIMIT 20;
 
@@ -112,41 +106,31 @@ GROUP BY current_company
 ORDER BY employee_count DESC
 LIMIT 20;
 
--- 12. Experience distribution
+-- 12. Location distribution
 SELECT 
-    CASE 
-        WHEN total_years_experience < 2 THEN '0-1 years'
-        WHEN total_years_experience < 5 THEN '2-4 years'
-        WHEN total_years_experience < 10 THEN '5-9 years'
-        WHEN total_years_experience < 15 THEN '10-14 years'
-        WHEN total_years_experience < 20 THEN '15-19 years'
-        ELSE '20+ years'
-    END as experience_range,
+    location,
     COUNT(*) as profile_count
 FROM flattened_profiles
-WHERE total_years_experience IS NOT NULL
-GROUP BY experience_range
-ORDER BY 
-    CASE experience_range
-        WHEN '0-1 years' THEN 1
-        WHEN '2-4 years' THEN 2
-        WHEN '5-9 years' THEN 3
-        WHEN '10-14 years' THEN 4
-        WHEN '15-19 years' THEN 5
-        ELSE 6
-    END;
+WHERE location IS NOT NULL AND location != ''
+GROUP BY location
+ORDER BY profile_count DESC
+LIMIT 15;
 
--- 13. Recent updates check
+-- 13. Search text validation
 SELECT 
-    'Recent Updates' as check_name,
-    COUNT(*) as profiles_updated_last_hour
-FROM flattened_profiles
-WHERE last_updated > NOW() - INTERVAL '1 hour';
-
--- 14. Search vector validation
-SELECT 
-    'Search Vector Status' as check_name,
+    'Search Text Status' as check_name,
     COUNT(*) as total_profiles,
-    COUNT(*) FILTER (WHERE search_vector IS NOT NULL) as profiles_with_search_vector,
-    COUNT(*) FILTER (WHERE search_vector IS NULL) as profiles_without_search_vector
+    COUNT(*) FILTER (WHERE search_text IS NOT NULL) as profiles_with_search_text,
+    COUNT(*) FILTER (WHERE search_text IS NULL) as profiles_without_search_text
+FROM flattened_profiles;
+
+-- 14. Data completeness overview
+SELECT 
+    'Data Completeness' as report_name,
+    ROUND(COUNT(*) FILTER (WHERE full_name IS NOT NULL) * 100.0 / COUNT(*), 2) as pct_with_name,
+    ROUND(COUNT(*) FILTER (WHERE current_title IS NOT NULL) * 100.0 / COUNT(*), 2) as pct_with_title,
+    ROUND(COUNT(*) FILTER (WHERE location IS NOT NULL) * 100.0 / COUNT(*), 2) as pct_with_location,
+    ROUND(COUNT(*) FILTER (WHERE about_me IS NOT NULL) * 100.0 / COUNT(*), 2) as pct_with_about_me,
+    ROUND(COUNT(*) FILTER (WHERE linkedin IS NOT NULL) * 100.0 / COUNT(*), 2) as pct_with_linkedin,
+    ROUND(COUNT(*) FILTER (WHERE skills IS NOT NULL AND skills != '') * 100.0 / COUNT(*), 2) as pct_with_skills
 FROM flattened_profiles;
