@@ -1,0 +1,882 @@
+[{
+  "_id": {
+    "$oid": "60a9e428cd2b153c7f2test5"
+  },
+  "ext_src": "Public_Source3F",
+  "skills": [
+    "Acls",
+    "Patient Safety",
+    "BLS",
+    "Telemetry",
+    "Emergency Room",
+    "Acute Care",
+    "Critical Care",
+    "Healthcare",
+    "Hospitals",
+    "Healthcare Management",
+    "Medical/Surgical",
+    "Inpatient",
+    "Nursing",
+    "Pals",
+    "Medical Terminology",
+    "Emergency Medicine",
+    "Registered Nurses",
+    "Ekg",
+    "Icu",
+    "Medication Administration",
+    "Clinical Research",
+    "Hipaa",
+    "Patient Advocacy",
+    "Direct Patient Care",
+    "Quality Patient Care",
+    "Quality Improvement",
+    "CPR Certified",
+    "Phlebotomy",
+    "Managed Care",
+    "Palliative Care",
+    "Health Education",
+    "Cardiac Care",
+    "Nursing Care",
+    "Ambulatory Care",
+    "Disease Management",
+    "Emr",
+    "Meditech",
+    "Physician Relations",
+    "Triage",
+    "Emergency Nursing",
+    "TNCC",
+    "Utilization Management",
+    "Urgent Care",
+    "Trauma Nursing",
+    "Cardiac Monitoring",
+    "Pediatric Nursing",
+    "Nursing Process",
+    "Jcaho",
+    "Nursing Documentation",
+    "Charge Nurse"
+  ],
+  "mark_gc": false,
+  "education": [
+    {
+      "school_info": {
+        "name": "Schreiner University",
+        "domain": null,
+        "lnkd_school_id": "schreiner-university",
+        "lnkd_school_src_id": "84911",
+        "school_id": "5e86158fe32eb77541ab9a67"
+      },
+      "education_details": {
+        "degree": [
+          "BSN"
+        ],
+        "major": [
+          " Registered Nursing/Registered Nurse"
+        ],
+        "projects": [],
+        "courses": [],
+        "skills": [],
+        "grades": "",
+        "description": null
+      },
+      "misc": [],
+      "duration": {
+        "start_date": {
+          "$date": "2018-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2020-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "school_info": {
+        "name": "Del Mar College",
+        "domain": null,
+        "lnkd_school_id": "del-mar-college",
+        "lnkd_school_src_id": "37367"
+      },
+      "education_details": {
+        "degree": [
+          "Associate's degree"
+        ],
+        "major": [
+          " Registered Nursing/Registered Nurse"
+        ],
+        "projects": [],
+        "courses": [],
+        "skills": [],
+        "grades": "",
+        "description": null
+      },
+      "misc": [],
+      "duration": {
+        "start_date": {
+          "$date": "2006-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2011-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "school_info": {
+        "name": "NAVY S.E.R.E School ",
+        "domain": null,
+        "lnkd_school_id": null,
+        "lnkd_school_src_id": null
+      },
+      "education_details": {
+        "degree": [
+          "Survival"
+        ],
+        "major": [
+          " Survival Evasion Rescue Escape"
+        ],
+        "projects": [],
+        "courses": [],
+        "skills": [],
+        "grades": "",
+        "description": null
+      },
+      "misc": [],
+      "duration": {
+        "start_date": {
+          "$date": "1998-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "1998-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "school_info": {
+        "name": "Navy AD A school ",
+        "domain": null,
+        "lnkd_school_id": null,
+        "lnkd_school_src_id": null
+      },
+      "education_details": {
+        "degree": [
+          "Airframe Mechanics and Aircraft Maintenance Technology/Technician"
+        ],
+        "major": [],
+        "projects": [],
+        "courses": [],
+        "skills": [],
+        "grades": "",
+        "description": null
+      },
+      "misc": [],
+      "duration": {
+        "start_date": {
+          "$date": "1998-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "1998-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "school_info": {
+        "name": "Navy Aircrew School ",
+        "domain": null,
+        "lnkd_school_id": null,
+        "lnkd_school_src_id": null
+      },
+      "education_details": {
+        "degree": [
+          "Aircrew wings"
+        ],
+        "major": [
+          " Aircraft survival"
+        ],
+        "projects": [],
+        "courses": [],
+        "skills": [],
+        "grades": "",
+        "description": null
+      },
+      "misc": [],
+      "duration": {
+        "start_date": {
+          "$date": "1998-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "1998-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "school_info": {
+        "name": "Bel Air High School",
+        "domain": null,
+        "lnkd_school_id": "bel-air-high-school-46",
+        "lnkd_school_src_id": "34215493"
+      },
+      "education_details": {
+        "degree": [
+          "High school Diploma"
+        ],
+        "major": [
+          " High School/Secondary Diplomas and Certificates"
+        ],
+        "projects": [],
+        "courses": [],
+        "skills": [],
+        "grades": "",
+        "description": null
+      },
+      "misc": [],
+      "duration": {
+        "start_date": {
+          "$date": "1992-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "1997-01-01T00:00:00.000Z"
+        }
+      }
+    }
+  ],
+  "kaggle_profiles": [],
+  "code_profiles": [],
+  "stack_profiles": [],
+  "research_profiles": [],
+  "medical_profiles": [],
+  "workexp": [
+    {
+      "company": {
+        "company_id": "5b0c4ad23200621bdb501c0c",
+        "name": "U.S. Department of Veterans Affairs",
+        "lnkd_company_id": "department-of-veterans-affairs",
+        "lnkd_company_src_id": "23789",
+        "location": "San Antonio, Texas Metropolitan Area"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Registered Nurse"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2018-02-01T00:00:00.000Z"
+        },
+        "end_date": null,
+        "to_present": true
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "6023515fde9e51864cc2808b",
+        "name": "HealthTrust Workforce Solutions",
+        "lnkd_company_id": "healthtrust-workforce-solutions",
+        "lnkd_company_src_id": "3552395",
+        "location": "San Antonio, Texas, United States"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Agency RN"
+          },
+          "description": "9yrs experience in the ED. TNCC, ACLS, BLS, PALS and NIH certified. ESI triage qualified within 8 months of acquiring RN, charge nurse of 31 bed ER within 1.2yrs as RN in a level 4 trauma facility. Facilitate proper personnel in the ER for ease of patient flow. Provide proper level of care for each individual patient and able to identify risk factors and signs and symptoms for each emergency that walks through the door or is brought in by EMS.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2016-01-01T00:00:00.000Z"
+        },
+        "end_date": null,
+        "to_present": true
+      }
+    },
+    {
+      "company": {
+        "company_id": "",
+        "name": "Full Spectrum Emergency Room (ER) & Urgent Care",
+        "lnkd_company_id": null,
+        "lnkd_company_src_id": null,
+        "location": "San Antonio, Texas Area"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Director of Nursing, Charge nurse"
+          },
+          "description": "4yrs experience in the ED. TNCC, ACLS, BLS, PALS and NIH certified. ESI triage qualified within 8 months of acquiring RN, charge nurse of 31 bed ER within 1.2yrs as RN in a level 4 trauma facility. Charge nurse of a 7 bed free standing ED. Run labs and transcribe results in epowerdocs for the ED physician. Facilitate proper personnel in the ED for ease of patient flow. Provide proper level of care for each individual patient and able to identify risk factors and signs and symptoms for each emergency that walks through the door. Facilitate proper transfer of patient to facility for higher level of care.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2015-11-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2018-01-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "company": {
+        "company_id": "5b0c4ae63200621bdb5960a7",
+        "name": "Methodist Healthcare System",
+        "lnkd_company_id": "methodist-healthcare-system",
+        "lnkd_company_src_id": "31827",
+        "location": "San Antonio, Texas Area"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Resource Nurse"
+          },
+          "description": "3.5yrs experience in the ED. TNCC, ACLS, BLS, PALS and NIH certified. ESI triage qualified within 8 months of acquiring RN, charge nurse of 31 bed ER within 1.2yrs as RN in a level 4 trauma facility. Facilitate proper personnel in the ER for ease of patient flow. Provide proper level of care for each individual patient and able to identify risk factors and signs and symptoms for each emergency that walks through the door or is brought in by EMS.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2015-09-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2016-01-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5e862a46e32eb77541237e85",
+        "name": "Complete Emergency Care",
+        "lnkd_company_id": "complete-emergency-care",
+        "lnkd_company_src_id": "4664776",
+        "location": "22250 Bulverde Rd, San Antonio, TX"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Emergency Room RN"
+          },
+          "description": "3.5yrs experience in the ED. TNCC, ACLS, BLS, PALS and NIH certified. ESI triage certified. In charge of an 8 bed ER. Facilitate staff in ER to start IV's, draw labs and run labs in our own laboratory. Get results of all our in house labs i.e. Cardiac Enzymes, CBC, CMP, influenza, VBG's etc. and report them to the ER physician and record them to our system. Stabilize patients that walk in through the door with any emergency that may arise. Transfer patients with proper facilities for higher acuity of care for admission.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2014-12-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2015-10-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "company": {
+        "company_id": "5b0c4aef3200621bdb5dbff8",
+        "name": "Christus Spohn Health System",
+        "lnkd_company_id": "christus-spohn-health-system",
+        "lnkd_company_src_id": "2525580",
+        "location": "Corpus Christi, Texas Area"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Staffing Pool Nurse"
+          },
+          "description": "3.5yrs experience in the ED. TNCC, ACLS, BLS, PALS and NIH certified. ESI triage qualified within 8 months of acquiring RN, charge nurse of 31 bed ER within 1.2yrs as RN in a level 4 trauma facility. Facilitate proper personnel in the ER for ease of patient flow. Provide proper level of care for each individual patient and able to identify risk factors and signs and symptoms for each emergency that walks through the door or is brought in by EMS.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2012-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2015-09-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5b0c4ae63200621bdb5960a7",
+        "name": "Methodist Healthcare System",
+        "lnkd_company_id": "methodist-healthcare-system",
+        "lnkd_company_src_id": "31827",
+        "location": "San Antonio, Texas Area"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Emergency Room RN"
+          },
+          "description": "9yrs experience in the ED. TNCC, ACLS, BLS, PALS and NIH certified. ESI triage qualified within 8 months of acquiring RN, charge nurse of 31 bed ER within 1.2yrs as RN in a level 4 trauma facility. Facilitate proper personnel in the ER for ease of patient flow. Provide proper level of care for each individual patient and able to identify risk factors and signs and symptoms for each emergency that walks through the door or is brought in by EMS.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2013-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2014-12-01T00:00:00.000Z"
+        }
+      }
+    },
+    {
+      "company": {
+        "company_id": "5b0c4ad93200621bdb53566c",
+        "name": "CHRISTUS Health",
+        "lnkd_company_id": "christus-health",
+        "lnkd_company_src_id": "10769",
+        "location": null
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Emergency Room Technician"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2010-09-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2012-01-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5b0c4ab93200621bdb446936",
+        "name": "The Home Depot",
+        "lnkd_company_id": "the-home-depot",
+        "lnkd_company_src_id": "1534",
+        "location": "Corpus Christi, Texas Area"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Customer Service Representative"
+          },
+          "description": "Garden customer service rep",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2007-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2010-09-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5b0c4acb3200621bdb4d6158",
+        "name": "United States Postal Service",
+        "lnkd_company_id": "usps",
+        "lnkd_company_src_id": "3694",
+        "location": "Corpus Christi, Texas"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Mail Carrier"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2007-01-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2007-11-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5bd4f9b510cac61dcb995060",
+        "name": "Stingers",
+        "lnkd_company_id": null,
+        "lnkd_company_src_id": null,
+        "location": "Corpus Christi, Texas"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Doorman"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2003-03-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2007-09-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5e86296de32eb775411f1c30",
+        "name": "Dynacorp Fabricators Inc.",
+        "lnkd_company_id": "enercorp",
+        "lnkd_company_src_id": "1864158",
+        "location": "Germany"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Aviation Mechanic"
+          },
+          "description": "Provide ground support and transition for the Army and its aircraft. To offload from ships and breakdown and load onto C-17 and C-5's to transition to Afghanistan.",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "2006-03-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2006-06-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5b0c4a983200621bdb335a87",
+        "name": "US Navy",
+        "lnkd_company_id": "us-navy",
+        "lnkd_company_src_id": "1335",
+        "location": null
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Aircraft Mechanic"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "1998-05-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2003-05-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5b0c4a983200621bdb335a87",
+        "name": "US Navy",
+        "lnkd_company_id": "us-navy",
+        "lnkd_company_src_id": "1335",
+        "location": null
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Crew chief"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "1998-05-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "2003-05-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "5b0c4ace3200621bdb4ea076",
+        "name": "Whataburger",
+        "lnkd_company_id": "whataburger",
+        "lnkd_company_src_id": "38204",
+        "location": null
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Customer Service Representative"
+          },
+          "description": null,
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "1997-10-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "1998-05-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    },
+    {
+      "company": {
+        "company_id": "",
+        "name": "Dick Poe Dodge",
+        "lnkd_company_id": "dick-poe-dodge",
+        "lnkd_company_src_id": "4021330",
+        "location": "El Paso, Texas"
+      },
+      "skills": [],
+      "projects": [
+        {
+          "project_type": "Industry",
+          "role_and_group": {
+            "title": "Parts Specialist"
+          },
+          "description": "Parts runner and detailer",
+          "misc": {
+            "contributors": []
+          }
+        }
+      ],
+      "duration": {
+        "start_date": {
+          "$date": "1997-06-01T00:00:00.000Z"
+        },
+        "end_date": {
+          "$date": "1997-10-01T00:00:00.000Z"
+        }
+      },
+      "exec_profile": []
+    }
+  ],
+  "ref": "pub_plab_60a9e42862d8828324662228",
+  "ext_src_ref": "686fd1665c41f47c2666ce63",
+  "ext_refs": [
+    {
+      "source": "LinkedIn",
+      "source_ref": "adrian-hernandez-bsn-rn-aa89ab95",
+      "url": "https://www.linkedin.com/in/adrian-hernandez-bsn-rn-aa89ab95"
+    },
+    {
+      "source": "UUIDLinkedIn",
+      "source_ref": "339883616",
+      "url": null
+    }
+  ],
+  "candidate": {
+    "github": [],
+    "stackoverflow": [],
+    "ethnicity": [
+      "hispanic"
+    ],
+    "other_contacts": [],
+    "candidate_tags": [
+      {
+        "tag_name": "indeed",
+        "tag_desc": "nurse",
+        "tag_ts": {
+          "$date": "2022-01-17T18:30:00.000Z"
+        }
+      }
+    ],
+    "full_name": "Tester Profile",
+    "sname": "adrian hernandez bsn rn",
+    "title": "Registered Nurse at U.S. Department of Veterans Affairs",
+    "about_me": "RN for 9yrs in the ED. Currently charge nurse in the VA. Charge nurse in a 31 bed ED, ESI triage nurse and ED nurse. Former ER director of 2 free standing Emergency rooms. Managed over 31 staff members. Consistently helping the ED run in a sufficient, timely and productive manner. With great use of resources from ED physicians, peers and techs. Actively learning and helping other's push themselves into doing their best. Positive outlook and strong leadership. Resourceful, team player, sacrificial for others, department and selfless. Increasing patient education on personal illnesses. Active in many activities outside of work. Strong family background and foreground.",
+    "address": "San Antonio, Texas, United States",
+    "location_raw": "San Antonio, Texas, United States",
+    "linkedin": "https://www.linkedin.com/in/adrian-hernandez-bsn-rn-aa89ab95",
+    "gender": "male",
+    "location": {
+      "city": "San Antonio",
+      "state": "Texas",
+      "country": "United States"
+    },
+    "num_connections": 104
+  },
+  "accolades": {
+    "endorsements": [],
+    "awards": []
+  },
+  "published_work": {
+    "patents": [],
+    "publications": []
+  },
+  "additional_info": {
+    "projects": [],
+    "certifications": [
+      {
+        "name": "T.N.C.C.",
+        "authority": "American Heart Association | American Stroke Association",
+        "date": {
+          "$date": "2014-02-01T00:00:00.000Z"
+        },
+        "description": null
+      },
+      {
+        "name": "ACLS",
+        "authority": "American Heart Association | American Stroke Association",
+        "date": {
+          "$date": "2012-01-01T00:00:00.000Z"
+        },
+        "description": null
+      },
+      {
+        "name": "P.A.L.S.",
+        "authority": "American Heart Association | American Stroke Association",
+        "date": {
+          "$date": "2012-01-01T00:00:00.000Z"
+        },
+        "description": null
+      },
+      {
+        "name": "BLS",
+        "authority": "American Heart Association | American Stroke Association",
+        "date": {
+          "$date": "2010-09-01T00:00:00.000Z"
+        },
+        "description": null
+      }
+    ],
+    "volunteer_experience": [],
+    "languages": [
+      {
+        "name": "english",
+        "proficiency": "native or bilingual proficiency"
+      },
+      {
+        "name": "spanish",
+        "proficiency": "native or bilingual proficiency"
+      },
+      {
+        "name": "English",
+        "proficiency": "Native or bilingual proficiency"
+      },
+      {
+        "name": "Spanish",
+        "proficiency": "Native or bilingual proficiency"
+      },
+      {
+        "name": "English",
+        "proficiency": "native or bilingual"
+      },
+      {
+        "name": "Spanish",
+        "proficiency": "native or bilingual"
+      }
+    ]
+  },
+  "compensation_history": [],
+  "investment_profiles": [],
+  "created_at": {
+    "$date": "2021-01-01T00:00:00.000Z"
+  },
+  "updated_at": {
+    "$date": "2025-07-10T14:42:37.250Z"
+  },
+  "__v": 0,
+  "last_ingested_at": {
+    "$date": "2025-07-10T14:42:46.609Z"
+  },
+  "last_overwrite_date": {
+    "$date": "2025-07-10T14:42:47.117Z"
+  },
+  "profile_verifications": [
+    {
+      "source": "linkedin",
+      "joining_date": {
+        "$date": "2014-04-01T00:00:00.000Z"
+      },
+      "verifications": [
+        {
+          "verified": false
+        }
+      ]
+    }
+  ]
+}]
