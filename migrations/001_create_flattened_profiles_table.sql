@@ -2,7 +2,6 @@
 -- This table stores flattened profile data synchronized from public_profiles
 
 CREATE TABLE IF NOT EXISTS flattened_profiles (
-    search_text tsvector DEFAULT to_tsvector('english'::regconfig, COALESCE((full_jsonb)::text, ''::text)),
     original_id text UNIQUE,
     full_name text,
     current_title text,
@@ -14,7 +13,8 @@ CREATE TABLE IF NOT EXISTS flattened_profiles (
     current_company text,
     current_title_from_workexp text,
     past_experience text,
-    full_jsonb jsonb
+    full_jsonb jsonb,
+    search_text tsvector
 );
 
 -- Create indexes for better query performance

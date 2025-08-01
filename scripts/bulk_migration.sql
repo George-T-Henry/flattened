@@ -47,8 +47,40 @@ ON CONFLICT (original_id) DO UPDATE SET
     past_experience = EXCLUDED.past_experience,
     full_jsonb = EXCLUDED.full_jsonb;
 
--- Show migration results
+-- Show migration results and validation
+DO $$
+DECLARE
+    source_count INTEGER;
+    target_count INTEGER;
+    failed_count INTEGER;
+BEGIN
+    -- Get counts
+    SELECT COUNT(*) INTO source_count 
+    FROM public_profiles 
+    WHERE profile IS NOT NULL AND profile != '{}'::jsonb;
+    
+    SELECT COUNT(*) INTO target_count 
+    FROM flattened_profiles;
+    
+    failed_count := source_count - target_count;
+    
+    -- Report results
+    RAISE NOTICE 'Migration Results:';
+    RAISE NOTICE '  Source profiles: %', source_count;
+    RAISE NOTICE '  Migrated profiles: %', target_count;
+    RAISE NOTICE '  Failed migrations: %', failed_count;
+    
+    IF failed_count > 0 THEN
+        RAISE WARNING 'Some profiles failed to migrate. Check logs for details.';
+    ELSE
+        RAISE NOTICE 'All profiles migrated successfully!';
+    END IF;
+END $$;
+
+-- Final validation query
 SELECT 
     'Migration Complete' as status,
-    COUNT(*) as profiles_migrated
+    COUNT(*) as profiles_migrated,
+    COUNT(*) FILTER (WHERE full_name IS NOT NULL) as profiles_with_names,
+    COUNT(*) FILTER (WHERE current_company IS NOT NULL) as profiles_with_companies
 FROM flattened_profiles;

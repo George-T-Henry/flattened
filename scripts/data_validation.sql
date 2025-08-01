@@ -44,7 +44,7 @@ SELECT
     original_id,
     full_name,
     current_company,
-    total_years_experience
+    current_title_from_workexp
 FROM flattened_profiles 
 WHERE full_name IS NULL OR full_name = ''
 LIMIT 10;
