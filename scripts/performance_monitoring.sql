@@ -88,11 +88,11 @@ SELECT original_id, full_name, current_company
 FROM flattened_profiles 
 WHERE search_text @@ plainto_tsquery('software engineer');
 
--- 8. Skills search performance
+-- 8. Skills search performance (using GIN index)
 EXPLAIN (ANALYZE, BUFFERS)
 SELECT original_id, full_name, skills
 FROM flattened_profiles 
-WHERE skills ILIKE '%JavaScript%';
+WHERE to_tsvector('english', COALESCE(skills, '')) @@ plainto_tsquery('JavaScript');
 
 -- 9. Company search performance
 EXPLAIN (ANALYZE, BUFFERS)

@@ -23,7 +23,8 @@ CREATE INDEX IF NOT EXISTS idx_flattened_profiles_full_name ON flattened_profile
 CREATE INDEX IF NOT EXISTS idx_flattened_profiles_current_company ON flattened_profiles(current_company);
 CREATE INDEX IF NOT EXISTS idx_flattened_profiles_location ON flattened_profiles(location);
 CREATE INDEX IF NOT EXISTS idx_flattened_profiles_search ON flattened_profiles USING GIN(search_text);
-CREATE INDEX IF NOT EXISTS idx_flattened_profiles_skills ON flattened_profiles(skills);
+-- Use GIN index for skills column to handle large text values and enable efficient text search
+CREATE INDEX IF NOT EXISTS idx_flattened_profiles_skills ON flattened_profiles USING GIN(to_tsvector('english', COALESCE(skills, '')));
 CREATE INDEX IF NOT EXISTS idx_flattened_profiles_current_title ON flattened_profiles(current_title);
 
 -- Create a function to update the search text vector
